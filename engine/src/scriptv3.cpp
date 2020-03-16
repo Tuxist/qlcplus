@@ -832,6 +832,7 @@ QList <QStringList> ScriptV3::tokenizeLine(const QString& str, bool* ok)
     return tokens;
 }
 
-void ScriptV3::slotRunnerFinished(){
+void ScriptV3::slotRunnerFinished()
+{
     return;
 }
