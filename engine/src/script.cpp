@@ -42,7 +42,7 @@ const QString Script::jumpCmd = QString("jump");
 const QString Script::blackoutOn = QString("on");
 const QString Script::blackoutOff = QString("off");
 
-Script::Script(Doc* doc) : Function (doc, Function::ScriptType){
+Script::Script(Doc* doc) : ScriptApi(doc){
     switch(ScriptVersion){
         case 4:
             CallApi=new ScriptV4(doc);
@@ -59,6 +59,14 @@ Script::~Script(){
     delete CallApi;
 }
 
+void Script::setID(quint32 id){
+    CallApi->setID(id);
+}
+
+quint32 Script::id() const{
+    return CallApi->id();
+}
+
 QIcon Script::getIcon() const{
     return CallApi->getIcon();
 }
@@ -66,7 +74,6 @@ QIcon Script::getIcon() const{
 quint32 Script::totalDuration(){
     return CallApi->totalDuration();
 }
-
 
 Function* Script::createCopy(Doc* doc, bool addToDoc){
     return CallApi->createCopy(doc,addToDoc);
@@ -118,6 +125,18 @@ QStringList Script::syntaxErrorsLinesString(){
 void Script::slotRunnerFinished(){
   if(ScriptVersion==4)
       CallApi->slotRunnerFinished();
+}
+
+void Script::preRun(MasterTimer *timer){
+    CallApi->preRun(timer);
+}
+
+void Script::write(MasterTimer *timer, QList<Universe*> universes){
+    CallApi->write(timer,universes);
+}
+
+void Script::postRun(MasterTimer *timer, QList<Universe*> universes){
+    CallApi->postRun(timer,universes);
 }
 
 bool Script::loadXML(QXmlStreamReader &root){

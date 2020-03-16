@@ -35,7 +35,7 @@ class Doc;
 class ScriptApi : public Function
 {
     Q_OBJECT
-protected:
+public:
     ScriptApi(Doc* doc);
     virtual ~ScriptApi();
     virtual QIcon getIcon() const=0;
@@ -61,7 +61,7 @@ protected slots:
     friend class Script;
 };
 
-class Script : public Function 
+class Script : public ScriptApi
 {
     Q_OBJECT
 
@@ -89,6 +89,8 @@ public:
     static short ScriptVersion;
     Script(Doc* doc);
     virtual ~Script();
+    void setID(quint32 id);
+    quint32 id() const;
     QIcon getIcon() const;
     quint32 totalDuration();
     Function* createCopy(Doc* doc, bool addToDoc = true);
@@ -101,6 +103,9 @@ public:
     QList<quint32> fixtureList() const;
     QList<int> syntaxErrorsLines();
     QStringList syntaxErrorsLinesString();
+    void preRun(MasterTimer *timer);
+    void write(MasterTimer *timer, QList<Universe*> universes);
+    void postRun(MasterTimer *timer, QList<Universe*> universes);
     bool loadXML(QXmlStreamReader &root);
     bool saveXML(QXmlStreamWriter *doc);
 protected slots:
