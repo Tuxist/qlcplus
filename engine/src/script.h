@@ -35,7 +35,7 @@ class Doc;
 class ScriptApi : public Function
 {
     Q_OBJECT
-public:
+protected:
     ScriptApi(Doc* doc);
     virtual ~ScriptApi();
     virtual QIcon getIcon() const=0;
