@@ -45,10 +45,10 @@ const QString Script::blackoutOff = QString("off");
 Script::Script(Doc* doc) : ScriptApi(doc){
     switch(ScriptVersion){
         case 4:
-            CallApi=new ScriptV4(doc);
+            new (this) ScriptV4(doc);
             break;
         case 3:
-            CallApi=new ScriptV3(doc);
+            new (this) ScriptV3(doc);
             break;
         default:
             exit(1);
@@ -56,91 +56,82 @@ Script::Script(Doc* doc) : ScriptApi(doc){
 }
 
 Script::~Script(){
-    delete CallApi;
-}
-
-void Script::setID(quint32 id){
-    CallApi->setID(id);
-}
-
-quint32 Script::id() const{
-    return CallApi->id();
 }
 
 QIcon Script::getIcon() const{
-    return CallApi->getIcon();
+    return getIcon();
 }
 
 quint32 Script::totalDuration(){
-    return CallApi->totalDuration();
+    return totalDuration();
 }
 
 Function* Script::createCopy(Doc* doc, bool addToDoc){
-    return CallApi->createCopy(doc,addToDoc);
+    return createCopy(doc,addToDoc);
 }
 
 
 bool Script::copyFrom(const Function* function){
-    return CallApi->copyFrom(function);
+    return copyFrom(function);
 }
 
 
 bool Script::setData(const QString& str){
-    return CallApi->setData(str);
+    return setData(str);
 }
 
 
 bool Script::appendData(const QString& str){
-    return CallApi->appendData(str);
+    return appendData(str);
 }
 
 
 QString Script::data() const{
-    return CallApi->data();
+    return data();
 }
 
 
 QStringList Script::dataLines() const{
-    return CallApi->dataLines();
+    return dataLines();
 }
 
 
 QList<quint32> Script::functionList() const{
-    return CallApi->functionList();
+    return functionList();
 }
 
 
 QList<quint32> Script::fixtureList() const{
-    return CallApi->fixtureList();
+    return fixtureList();
 }
 
 QList<int>  Script::syntaxErrorsLines(){
-    return CallApi->syntaxErrorsLines();
+    return syntaxErrorsLines();
 }
 
 QStringList Script::syntaxErrorsLinesString(){
-    return CallApi->syntaxErrorsLinesString();
+    return syntaxErrorsLinesString();
 }
 
 void Script::slotRunnerFinished(){
   if(ScriptVersion==4)
-      CallApi->slotRunnerFinished();
+      slotRunnerFinished();
 }
 
 void Script::preRun(MasterTimer *timer){
-    CallApi->preRun(timer);
+    preRun(timer);
 }
 
 void Script::write(MasterTimer *timer, QList<Universe*> universes){
-    CallApi->write(timer,universes);
+    write(timer,universes);
 }
 
 void Script::postRun(MasterTimer *timer, QList<Universe*> universes){
-    CallApi->postRun(timer,universes);
+    postRun(timer,universes);
 }
 
 bool Script::loadXML(QXmlStreamReader &root){
-    return CallApi->loadXML(root);
+    return loadXML(root);
 }
 
 

@@ -89,8 +89,6 @@ public:
     static short ScriptVersion;
     Script(Doc* doc);
     virtual ~Script();
-    void setID(quint32 id);
-    quint32 id() const;
     QIcon getIcon() const;
     quint32 totalDuration();
     Function* createCopy(Doc* doc, bool addToDoc = true);
