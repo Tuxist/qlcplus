@@ -63,29 +63,16 @@ void *Script::operator new(size_t size)
 
 void *Script::operator new(size_t size,void *ptr)
 {
-   switch(Script::ScriptVersion){
-        case 4:{
-            size+=sizeof(ScriptV4);
-            break;
-        };
-        case 3:{
-            size+=sizeof(ScriptV3);
-            break;
-        };
-        default:{
-            exit(1);
-        };
-    }
     return ::operator new(size,ptr);
 }
 
 void Script::Reinitalize(Script* ins,Doc* doc){
     switch(Script::ScriptVersion){
         case 4:{
-            ins=new (ins) ScriptV4(doc);
+            ins=qobject_cast<Script*> (new (ins) ScriptV4(doc));
             break;
         }case 3:{
-            ins=new (ins) ScriptV3(doc);
+            ins=qobject_cast<Script*> (new (ins) ScriptV3(doc));
             break;
         }default:{
             exit(1);
@@ -96,7 +83,6 @@ void Script::Reinitalize(Script* ins,Doc* doc){
 Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
     if(reinitalize){
         Reinitalize(this,doc);
-        qobject_cast<Script*> (this);
     }
 }
 
