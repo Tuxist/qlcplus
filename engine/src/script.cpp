@@ -92,7 +92,7 @@ Script::~Script()
 
 QIcon Script::getIcon() const
 {
-    return QIcon(0);
+    return (QIcon)0;
 };
 
 quint32 Script::totalDuration()
@@ -126,7 +126,7 @@ QString Script::data() const
 };
 
 QStringList Script::dataLines() const{
-    return QStringList(0);
+    return (QStringList) 0;
 };
 
 QList<quint32> Script::functionList() const
