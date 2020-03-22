@@ -45,14 +45,15 @@ const QString Script::blackoutOff = QString("off");
 
 Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
     if(reinitalize){
+        this->~Script();
         switch(ScriptVersion){
             case 4:{
-                new (this) ScriptV4(doc);
-                qobject_cast<Script*> (this);
+                ScriptV4 *ins=new (this) ScriptV4(doc);
+                qobject_cast<Script*> (ins);
                 break;
             }case 3:{
-                new (this) ScriptV3(doc);
-                qobject_cast<Script*> (this);
+                ScriptV3 *ins=new (this) ScriptV3(doc);
+                qobject_cast<Script*> (ins);
                 break;
             }default:{
                 exit(1);
