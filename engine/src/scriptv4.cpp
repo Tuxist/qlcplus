@@ -36,7 +36,7 @@
  * Initialization
  ****************************************************************************/
 
-ScriptV4::ScriptV4(Doc* doc) : ScriptApi(doc)
+ScriptV4::ScriptV4(Doc* doc) : Script(doc,false)
     , m_runner(NULL) 
 {
     setName(tr("New Script"));

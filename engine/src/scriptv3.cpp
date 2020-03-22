@@ -40,7 +40,7 @@
  * Initialization
  ****************************************************************************/
 
-ScriptV3::ScriptV3(Doc* doc) : ScriptApi(doc)
+ScriptV3::ScriptV3(Doc* doc) : Script(doc,false)
     , m_currentCommand(0)
     , m_waitCount(0) 
 {

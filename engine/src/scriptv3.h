@@ -35,7 +35,7 @@ class Doc;
  * @{
  */
 
-class ScriptV3 : public ScriptApi
+class ScriptV3 : public Script
 {
 
     Q_OBJECT

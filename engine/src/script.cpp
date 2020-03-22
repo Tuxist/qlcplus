@@ -18,6 +18,7 @@
 */
 
 #include <QDebug>
+#include <string.h>
 
 #include "function.h"
 #include "scriptv3.h"
@@ -42,102 +43,47 @@ const QString Script::jumpCmd = QString("jump");
 const QString Script::blackoutOn = QString("on");
 const QString Script::blackoutOff = QString("off");
 
-Script::Script(Doc* doc) : ScriptApi(doc){
-    switch(ScriptVersion){
-        case 4:
-            new (this) ScriptV4(doc);
-            break;
-        case 3:
-            new (this) ScriptV3(doc);
-            break;
-        default:
-            exit(1);
+Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
+    if(reinitalize){
+        this->~Script();
+        switch(ScriptVersion){
+            case 4:{
+                new (this) ScriptV4(doc);
+                qobject_cast<Script*> (this);
+                break;
+            }case 3:{
+                new (this) ScriptV3(doc);
+                qobject_cast<Script*> (this);
+                break;
+            }default:{
+                exit(1);
+            }
+        }
     }
 }
 
 Script::~Script(){
 }
 
-QIcon Script::getIcon() const{
-    return getIcon();
-}
+QIcon Script::getIcon() const{return QIcon(0);};
+quint32 Script::totalDuration(){};
+Function* Script::createCopy(Doc* doc, bool addToDoc){};
+bool Script::copyFrom(const Function* function){};
+bool Script::setData(const QString& str){};
+bool Script::appendData(const QString& str){};
+QString Script::data() const{};
+QStringList Script::dataLines() const{};
+QList<quint32> Script::functionList() const{};
+QList<quint32> Script::fixtureList() const{};
+QList<int> Script::syntaxErrorsLines(){};
+QStringList Script::syntaxErrorsLinesString(){};
+void Script::preRun(MasterTimer *timer){};
+void Script::write(MasterTimer *timer, QList<Universe*> universes){};
+void Script::postRun(MasterTimer *timer, QList<Universe*> universes){};
+bool Script::loadXML(QXmlStreamReader &root){};
+bool Script::saveXML(QXmlStreamWriter *doc){};
 
-quint32 Script::totalDuration(){
-    return totalDuration();
-}
-
-Function* Script::createCopy(Doc* doc, bool addToDoc){
-    return createCopy(doc,addToDoc);
-}
-
-
-bool Script::copyFrom(const Function* function){
-    return copyFrom(function);
-}
-
-
-bool Script::setData(const QString& str){
-    return setData(str);
-}
-
-
-bool Script::appendData(const QString& str){
-    return appendData(str);
-}
-
-
-QString Script::data() const{
-    return data();
-}
-
-
-QStringList Script::dataLines() const{
-    return dataLines();
-}
-
-
-QList<quint32> Script::functionList() const{
-    return functionList();
-}
-
-
-QList<quint32> Script::fixtureList() const{
-    return fixtureList();
-}
-
-QList<int>  Script::syntaxErrorsLines(){
-    return syntaxErrorsLines();
-}
-
-QStringList Script::syntaxErrorsLinesString(){
-    return syntaxErrorsLinesString();
-}
-
-void Script::slotRunnerFinished(){
-  if(ScriptVersion==4)
-      slotRunnerFinished();
-}
-
-void Script::preRun(MasterTimer *timer){
-    preRun(timer);
-}
-
-void Script::write(MasterTimer *timer, QList<Universe*> universes){
-    write(timer,universes);
-}
-
-void Script::postRun(MasterTimer *timer, QList<Universe*> universes){
-    postRun(timer,universes);
-}
-
-bool Script::loadXML(QXmlStreamReader &root){
-    return loadXML(root);
-}
-
-
-bool Script::saveXML(QXmlStreamWriter *doc){
-    return CallApi->saveXML(doc);
-}
+void Script::slotRunnerFinished(){};
 
 ScriptApi::ScriptApi(Doc* doc) : Function(doc,Function::ScriptType){
     
