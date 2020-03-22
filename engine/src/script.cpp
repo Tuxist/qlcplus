@@ -80,6 +80,7 @@ void *Script::operator new(size_t size,void *ptr)
 }
 
 void Script::Reinitalize(Script* ins,Doc* doc){
+    delete ins;
     switch(Script::ScriptVersion){
         case 4:{
             ins=new (ins) ScriptV4(doc);
