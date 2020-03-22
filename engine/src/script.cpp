@@ -43,7 +43,43 @@ const QString Script::jumpCmd = QString("jump");
 const QString Script::blackoutOn = QString("on");
 const QString Script::blackoutOff = QString("off");
 
-Script* Script::Reinitalize(Script* ins,Doc* doc){
+void *Script::operator new(size_t size)
+{
+    switch(Script::ScriptVersion){
+        case 4:{
+            size+=sizeof(ScriptV4);
+            break;
+        };
+        case 3:{
+            size+=sizeof(ScriptV3);
+            break;
+        };
+        default:{
+            exit(1);
+        };
+    }
+    return ::operator new(size);
+}
+
+void *Script::operator new(size_t size,void *ptr)
+{
+   switch(Script::ScriptVersion){
+        case 4:{
+            size+=sizeof(ScriptV4);
+            break;
+        };
+        case 3:{
+            size+=sizeof(ScriptV3);
+            break;
+        };
+        default:{
+            exit(1);
+        };
+    }
+    return ::operator new(size,ptr);
+}
+
+void Script::Reinitalize(Script* ins,Doc* doc){
     switch(Script::ScriptVersion){
         case 4:{
             ins=new (ins) ScriptV4(doc);
@@ -55,7 +91,6 @@ Script* Script::Reinitalize(Script* ins,Doc* doc){
             exit(1);
         }
     }
-    return ins;
 }
 
 Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){

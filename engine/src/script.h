@@ -89,7 +89,9 @@ public:
     static short ScriptVersion;
     Script(Doc* doc,bool reinitalize=true);
     virtual ~Script();
-    static Script* Reinitalize(Script* ins,Doc* doc);
+    void *operator new(size_t size);
+    void *operator new(size_t size,void *ptr);
+    static void Reinitalize(Script* ins,Doc* doc);
     QIcon getIcon() const override;
     quint32 totalDuration() override ;
     Function* createCopy(Doc* doc, bool addToDoc = true) override;
