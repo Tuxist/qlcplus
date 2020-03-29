@@ -147,7 +147,8 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
 
 qint64 AudioRendererPortAudio::latency()
 {
-    return 0;
+    return Pa_GetStreamTime(m_paStream);
+    
 }
 
 QList<AudioDeviceInfo> AudioRendererPortAudio::getDevicesInfo()
