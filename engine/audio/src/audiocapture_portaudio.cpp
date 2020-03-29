@@ -19,6 +19,7 @@
 
 #include <QSettings>
 #include <QDebug>
+
 #include "audiocapture_portaudio.h"
 
 AudioCapturePortAudio::AudioCapturePortAudio(QObject * parent)

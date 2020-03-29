@@ -21,6 +21,7 @@
 #include <QSettings>
 #include <QString>
 #include <QDebug>
+#include <pa_jack.h>
 
 #include "audiodecoder.h"
 #include "audiorenderer_portaudio.h"
@@ -79,7 +80,9 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
     PaError err;
     PaStreamParameters outputParameters;
     PaStreamFlags flags = paNoFlag;
-//     PaJack_SetClientName("QLCPlus");
+    PaHostApiInfo const* hinfo = Pa_GetHostApiInfo(m_device.toInt());
+    if(hinfo &&hinfo->type==12)
+        PaJack_SetClientName("QLCPlus");
     
     memset( &outputParameters, 0 ,sizeof( outputParameters ) );
     
