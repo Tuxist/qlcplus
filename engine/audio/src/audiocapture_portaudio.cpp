@@ -57,6 +57,7 @@ bool AudioCapturePortAudio::initialize()
         return false;
     }
 
+    memset( &inputParameters, 0 ,sizeof( inputParameters ) );
     inputParameters.channelCount = m_channels;
     inputParameters.sampleFormat = paInt16;
     inputParameters.suggestedLatency = Pa_GetDeviceInfo( inputParameters.device )->defaultLowInputLatency;
@@ -68,7 +69,7 @@ bool AudioCapturePortAudio::initialize()
     /* -- setup stream -- */
     err = Pa_OpenStream( &Stream, &inputParameters, NULL, m_sampleRate, paFramesPerBufferUnspecified,
               paClipOff, /* we won't output out of range samples so don't bother clipping them */
-              NULL, /* no callback, use blocking API */
+              paNoFlag , /* no callback, use blocking API */
               NULL ); /* no callback, so no callback userData */
     if( err != paNoError )
     {
