@@ -80,7 +80,8 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
     PaError err;
     PaStreamParameters outputParameters;
     PaStreamFlags flags = paNoFlag;
-   
+    PaJack_SetClientName("QLCPlus");
+
     memset( &outputParameters, 0 ,sizeof( outputParameters ) );
     
     err = Pa_Initialize();
@@ -104,10 +105,6 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
         qDebug() << "Error: No default output device";
         return false;
     }
-    
-    PaHostApiInfo const* hinfo = Pa_GetHostApiInfo(m_device.toInt());
-    if(hinfo &&hinfo->type==PaHostApiTypeId::paJACK)
-        PaJack_SetClientName("QLCPlus");
     
     m_channels = chan;
 
