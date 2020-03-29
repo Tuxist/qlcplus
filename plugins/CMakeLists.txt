@@ -10,9 +10,9 @@ include_directories(
     hid/linux OPTIONAL
     hid/macx  OPTIONAL
     hid/win32 OPTIONAL
-    midi/alsa OPTIONAL
-    midi/win32 OPTIONAL
-    midi/macx OPTIONAL
+    midi/src/alsa OPTIONAL
+    midi/src/win32 OPTIONAL
+    midi/src/macx OPTIONAL
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Network_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
@@ -249,6 +249,7 @@ set(midiplugin_src
     midi/src/common/midiplugin.cpp
     midi/src/common/midiprotocol.cpp
     midi/src/common/miditemplate.cpp
+    midi/src/common/midienumerator.h
 )
 
 IF (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
