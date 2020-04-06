@@ -119,7 +119,7 @@ void AudioCapturePortAudio::uninitialize()
 
 qint64 AudioCapturePortAudio::latency()
 {
-    return 0; // TODO
+    return Pa_GetStreamTime(Stream);
 }
 
 void AudioCapturePortAudio::setVolume(qreal volume){
