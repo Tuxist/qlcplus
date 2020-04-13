@@ -35,6 +35,7 @@
 #include "fixture.h"
 #include "chaser.h"
 #include "scene.h"
+#include "script.h"
 #include "doc.h"
 #undef protected
 #undef private
@@ -44,7 +45,6 @@
 void ChaserRunner_Test::initTestCase()
 {
     m_doc = new Doc(this);
-
     QDir dir(INTERNAL_FIXTUREDIR);
     dir.setFilter(QDir::Files);
     dir.setNameFilters(QStringList() << QString("*%1").arg(KExtFixture));
@@ -58,6 +58,7 @@ void ChaserRunner_Test::cleanupTestCase()
 
 void ChaserRunner_Test::init()
 {
+    Script::ScriptVersion=4;
     QLCFixtureDef* def = m_doc->fixtureDefCache()->fixtureDef("Futurelight", "DJScan250");
     QVERIFY(def != NULL);
     QLCFixtureMode* mode = def->mode("Mode 1");

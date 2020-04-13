@@ -36,10 +36,10 @@ public:
     ~MidiEnumerator();
 
     void rescan();
-
+ 
     QList <MidiOutputDevice*> outputDevices() const;
     QList <MidiInputDevice*> inputDevices() const;
-
+ 
     MidiOutputDevice* outputDevice(const QVariant& uid) const;
     MidiInputDevice* inputDevice(const QVariant& uid) const;
 

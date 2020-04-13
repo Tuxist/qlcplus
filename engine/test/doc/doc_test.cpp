@@ -30,7 +30,7 @@
 #include "monitorproperties.h"
 #include "qlcfixturemode.h"
 #include "qlcfixturedef.h"
-#include "scriptwrapper.h"
+#include "script.h"
 #include "qlcphysical.h"
 #include "collection.h"
 #include "qlcchannel.h"
@@ -53,9 +53,7 @@
 void Doc_Test::initTestCase()
 {
     Bus::init(this);
-
     m_doc = new Doc(this);
-
     QDir dir(INTERNAL_FIXTUREDIR);
     dir.setFilter(QDir::Files);
     dir.setNameFilters(QStringList() << QString("*%1").arg(KExtFixture));
@@ -850,7 +848,7 @@ void Doc_Test::function()
     QVERIFY(m_doc->startupFunction() == s1->id());
 }
 
-void Doc_Test::usage()
+void Doc_Test::usage(short scriptversion)
 {
     Scene *s1 = new Scene(m_doc);
     m_doc->addFunction(s1);
@@ -884,6 +882,7 @@ void Doc_Test::usage()
     m_doc->addFunction(seq1);
 
     Script *sc1 = new Script(m_doc);
+
     sc1->appendData(QString("startfunction:%1").arg(c1->id()));
     m_doc->addFunction(sc1);
 

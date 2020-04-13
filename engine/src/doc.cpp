@@ -35,7 +35,7 @@
 #include "audioplugincache.h"
 #include "rgbscriptscache.h"
 #include "channelsgroup.h"
-#include "scriptwrapper.h"
+#include "script.h"
 #include "collection.h"
 #include "function.h"
 #include "universe.h"
@@ -261,7 +261,7 @@ QSharedPointer<AudioCapture> Doc::audioInputCapture()
     if (!m_inputCapture)
     {
         qDebug() << "Creating new audio capture";
-        m_inputCapture = QSharedPointer<AudioCapture>(
+        m_inputCapture = QSharedPointer<AudioCapturePortAudio>(
             new AudioCapturePortAudio()
         );
     }

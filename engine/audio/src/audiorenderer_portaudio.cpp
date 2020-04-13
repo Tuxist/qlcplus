@@ -21,6 +21,7 @@
 #include <QSettings>
 #include <QString>
 #include <QDebug>
+#include <pa_jack.h>
 
 #include "audiodecoder.h"
 #include "audiorenderer_portaudio.h"
@@ -32,6 +33,7 @@ AudioRendererPortAudio::AudioRendererPortAudio(QString device, QObject * parent)
     , m_channels(0)
     , m_frameSize(0)
 {
+    PaJack_SetClientName("QLCPlus");
 }
 
 AudioRendererPortAudio::~AudioRendererPortAudio()
@@ -80,6 +82,8 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
     PaStreamParameters outputParameters;
     PaStreamFlags flags = paNoFlag;
 
+    memset( &outputParameters, 0 ,sizeof( outputParameters ) );
+    
     err = Pa_Initialize();
     if( err != paNoError )
         return false;
@@ -101,7 +105,7 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
         qDebug() << "Error: No default output device";
         return false;
     }
-
+    
     m_channels = chan;
 
     outputParameters.channelCount = chan;       /* stereo output */
@@ -147,7 +151,8 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
 
 qint64 AudioRendererPortAudio::latency()
 {
-    return 0;
+    return Pa_GetStreamTime(m_paStream);
+    
 }
 
 QList<AudioDeviceInfo> AudioRendererPortAudio::getDevicesInfo()

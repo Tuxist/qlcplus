@@ -57,6 +57,7 @@ protected:
     bool readAudio(int maxSize);
 private:
     float Volume;
+    PaStream *Stream;
 };
 
 /** @} */
