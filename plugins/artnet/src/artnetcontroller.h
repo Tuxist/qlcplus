@@ -28,6 +28,8 @@
 #include <QSharedPointer>
 #else
 #include <QtNetwork>
+#include <QNetworkInterface>
+#include <QHostAddress>
 #endif
 #include <QMutex>
 #include <QTimer>
@@ -36,8 +38,9 @@
 
 #define ARTNET_PORT      6454
 
-typedef struct
+typedef class
 {
+public:
     ushort inputUniverse;
 
     QHostAddress outputAddress;

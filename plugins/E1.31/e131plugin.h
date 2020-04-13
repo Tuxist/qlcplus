@@ -20,6 +20,7 @@
 #ifndef E131PLUGIN_H
 #define E131PLUGIN_H
 
+#include <QtNetwork>
 #include <QNetworkAddressEntry>
 #include <QNetworkInterface>
 #include <QHostAddress>
@@ -30,8 +31,9 @@
 #include "qlcioplugin.h"
 #include "e131controller.h"
 
-typedef struct
+typedef class
 {
+public:
     QNetworkInterface interface;
     QNetworkAddressEntry address;
     E131Controller* controller;
