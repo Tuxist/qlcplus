@@ -19,6 +19,7 @@
 
 #include <QSettings>
 #include <QDebug>
+#include <portaudio.h>
 
 #ifdef PA_JACK_H
 #include <pa_jack.h>
