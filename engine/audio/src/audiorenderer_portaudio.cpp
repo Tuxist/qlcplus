@@ -21,7 +21,10 @@
 #include <QSettings>
 #include <QString>
 #include <QDebug>
+
+#ifdef PA_JACK_H
 #include <pa_jack.h>
+#endif
 
 #include "audiodecoder.h"
 #include "audiorenderer_portaudio.h"
@@ -33,7 +36,9 @@ AudioRendererPortAudio::AudioRendererPortAudio(QString device, QObject * parent)
     , m_channels(0)
     , m_frameSize(0)
 {
+#ifdef PA_JACK_H
     PaJack_SetClientName("QLCPlus");
+#endif
 }
 
 AudioRendererPortAudio::~AudioRendererPortAudio()

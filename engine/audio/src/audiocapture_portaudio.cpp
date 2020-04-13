@@ -19,7 +19,10 @@
 
 #include <QSettings>
 #include <QDebug>
+
+#ifdef PA_JACK_H
 #include <pa_jack.h>
+#endif
 
 #include "audiocapture_portaudio.h"
 
@@ -28,7 +31,9 @@ AudioCapturePortAudio::AudioCapturePortAudio(QObject * parent)
 {
     Stream = NULL;
     Volume=0.0f;
+#ifdef PA_JACK_H
     PaJack_SetClientName("QLCPlusCapture");
+#endif
 }
 
 AudioCapturePortAudio::~AudioCapturePortAudio()
