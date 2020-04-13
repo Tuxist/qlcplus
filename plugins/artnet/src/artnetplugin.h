@@ -21,9 +21,8 @@
 #define ARTNETPLUGIN_H
 
 #include <QtGlobal>
-#include <QNetworkConfiguration>
+#include <QtNetwork>
 #include <QNetworkInterface>
-#include <QNetworkAddressEntry>
 
 #include <QString>
 #include <QHash>
@@ -32,7 +31,7 @@
 #include "qlcioplugin.h"
 #include "artnetcontroller.h"
 
-typedef struct
+typedef class
 {
 public:
     QNetworkInterface interface;

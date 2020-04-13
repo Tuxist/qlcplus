@@ -161,7 +161,17 @@ set(enttecwing_src
     enttecwing/src/wing.cpp
 )
 
-add_library(enttecwing SHARED ${enttecwing_src})
+INCLUDE(GenerateExportHeader)
+SET(WING_MOC_SOURCES)
+QT5_WRAP_CPP(
+    WING_MOC_SOURCES
+    enttecwing/src/wing.h
+    enttecwing/src/playbackwing.h
+)
+
+add_library(enttecwing SHARED ${enttecwing_src} ${WING_MOC_SOURCES})
+
+GENERATE_EXPORT_HEADER(enttecwing)
 
 target_link_libraries(enttecwing Qt5::Widgets Qt5::Network)
 
@@ -229,10 +239,23 @@ target_link_libraries(hid Qt5::Widgets ${hidlink})
 install(TARGETS hid DESTINATION ${PLUGINDIR})
 
 #loopback plugin
-add_library(loopback SHARED 
+set(loopback_src
     interfaces/qlcioplugin.cpp 
     loopback/src/loopback.cpp
 )
+
+INCLUDE(GenerateExportHeader)
+SET(LOOPBACK_MOC_SOURCES)
+QT5_WRAP_CPP(
+    ${loopback_src}
+    loopback/src/loopback.h
+)
+
+add_library(loopback SHARED 
+    ${LOOPBACK_MOC_SOURCES}
+)
+
+GENERATE_EXPORT_HEADER(loopback)
 
 target_link_libraries(loopback Qt5::Core)
 install(TARGETS loopback DESTINATION ${PLUGINDIR})

@@ -22,6 +22,7 @@
 #define DMXUSBWIDGET_H
 
 #include <QElapsedTimer>
+#include "dmxinterface.h"
 
 #if defined(FTD2XX)
   #include "ftd2xx-interface.h"
@@ -35,7 +36,7 @@
 
 #define DEFAULT_OUTPUT_FREQUENCY    44  // 44 Hertz, according to the DMX specs
 
-typedef struct
+typedef class
 {
 public:
     /** The device line type (DMX, MIDI, etc) */
