@@ -5,6 +5,10 @@ find_package(LibSndFile)
 
 configure_file(qlcconfig.h.in qlcconfig.h)
 
+IF (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    add_definitions(-DPA_JACK)
+ENDIF()
+
 set (audioengine_src 
         audio/src/audio.cpp 
         audio/src/audiodecoder.cpp 
