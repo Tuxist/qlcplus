@@ -27,11 +27,11 @@
 
 #include "audiocapture_portaudio.h"
 
+PaStream *AudioCapturePortAudio::Stream=NULL;
+
 AudioCapturePortAudio::AudioCapturePortAudio(QObject * parent)
     : AudioCapture(parent)
 {
-    Stream = NULL;
-    Volume=0.0f;
 #ifdef PA_JACK_H
     PaJack_SetClientName("QLCPlusCapture");
 #endif
@@ -48,6 +48,8 @@ bool AudioCapturePortAudio::initialize()
     PaError err;
     PaStreamParameters inputParameters;
 
+    Volume=1.0;
+    
     err = Pa_Initialize();
     if( err != paNoError )
         return false;
@@ -97,7 +99,7 @@ bool AudioCapturePortAudio::initialize()
         Pa_Terminate();
         return false;
     }
-
+    
     return true;
 }
 
@@ -150,8 +152,13 @@ bool AudioCapturePortAudio::readAudio(int maxSize)
         qWarning("read from audio interface failed (%s)\n", Pa_GetErrorText (err));
         return false;
     }
-
+    
     qDebug() << "[PORTAUDIO readAudio] " << maxSize << "bytes read";
 
+    long gain = 0x4000;
+    long sample = *m_audioBuffer++;
+    long result = (gain * sample) > 15;
+    *m_audioBuffer++ = (short)result;
+    
     return true;
 }
