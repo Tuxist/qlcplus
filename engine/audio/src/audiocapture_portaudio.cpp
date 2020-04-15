@@ -32,7 +32,7 @@ AudioCapturePortAudio::AudioCapturePortAudio(QObject * parent)
 AudioCapturePortAudio::~AudioCapturePortAudio()
 {
     stop();
-    Q_ASSERT(AudioCapturePortAudio::Stream == NULL);
+    Q_ASSERT(Stream == NULL);
 }
 
 bool AudioCapturePortAudio::initialize()
@@ -68,10 +68,10 @@ bool AudioCapturePortAudio::initialize()
     inputParameters.hostApiSpecificStreamInfo = NULL;
   
     // ensure initialize() has not been called multiple times
-    Q_ASSERT(AudioCapturePortAudio::Stream == NULL);
+    Q_ASSERT(Stream == NULL);
 
     /* -- setup stream -- */
-    err = Pa_OpenStream( &AudioCapturePortAudio::Stream, &inputParameters, NULL, (m_sampleRate), paFramesPerBufferUnspecified,
+    err = Pa_OpenStream( &Stream, &inputParameters, NULL, (m_sampleRate), paFramesPerBufferUnspecified,
               paClipOff, /* we won't output out of range samples so don't bother clipping them */
               paNoFlag , /* no callback, use blocking API */
               NULL ); /* no callback, so no callback userData */
@@ -83,12 +83,12 @@ bool AudioCapturePortAudio::initialize()
     }
 
     /* -- start capture -- */
-    err = Pa_StartStream( AudioCapturePortAudio::Stream );
+    err = Pa_StartStream( Stream );
     if( err != paNoError )
     {
         qWarning("Cannot start stream capture (%s)\n",  Pa_GetErrorText(err));
-        Pa_CloseStream( AudioCapturePortAudio::Stream );
-        AudioCapturePortAudio::Stream = NULL;
+        Pa_CloseStream( Stream );
+        Stream = NULL;
         Pa_Terminate();
         return false;
     }
@@ -98,20 +98,20 @@ bool AudioCapturePortAudio::initialize()
 
 void AudioCapturePortAudio::uninitialize()
 {
-    Q_ASSERT(AudioCapturePortAudio::Stream != NULL);
+    Q_ASSERT(Stream != NULL);
 
     PaError err;
 
     /* -- Now we stop the stream -- */
-    err = Pa_StopStream( AudioCapturePortAudio::Stream );
+    err = Pa_StopStream( Stream );
     if( err != paNoError )
         qDebug() << "PortAudio error: " << Pa_GetErrorText( err );
 
     /* -- don't forget to cleanup! -- */
-    err = Pa_CloseStream( AudioCapturePortAudio::Stream );
+    err = Pa_CloseStream( Stream );
     if( err != paNoError )
         qDebug() << "PortAudio error: " << Pa_GetErrorText( err );
-    AudioCapturePortAudio::Stream = NULL;
+    Stream = NULL;
 
     err = Pa_Terminate();
     if( err != paNoError )
@@ -120,7 +120,7 @@ void AudioCapturePortAudio::uninitialize()
 
 qint64 AudioCapturePortAudio::latency()
 {
-    return Pa_GetStreamTime(AudioCapturePortAudio::Stream);
+    return Pa_GetStreamTime(Stream);
 }
 
 void AudioCapturePortAudio::setVolume(qreal volume){
@@ -137,9 +137,9 @@ void AudioCapturePortAudio::resume()
 
 bool AudioCapturePortAudio::readAudio(int maxSize)
 {
-    Q_ASSERT(AudioCapturePortAudio::Stream != NULL);
+    Q_ASSERT(Stream != NULL);
 
-    int err = Pa_ReadStream( AudioCapturePortAudio::Stream, m_audioBuffer, maxSize );
+    int err = Pa_ReadStream( Stream, m_audioBuffer, maxSize );
     if( err )
     {
         qWarning("read from audio interface failed (%s)\n", Pa_GetErrorText (err));
