@@ -28,7 +28,10 @@ set(artnet_src
     artnet/src/artnetplugin.cpp
 )
 
-add_library(artnet SHARED ${artnet_src})
+add_library(artnet SHARED 
+    ${artnet_src}
+    dmxusb/src/dmxinterface.h
+)
 
 target_link_libraries(artnet Qt5::Core Qt5::Widgets Qt5::Network)
 
