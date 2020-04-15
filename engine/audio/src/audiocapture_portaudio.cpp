@@ -44,10 +44,6 @@ bool AudioCapturePortAudio::initialize()
     
     Volume=1.0;
     
-    err = Pa_Initialize();
-    if( err != paNoError )
-        return false;
-
     QSettings settings;
     QVariant var = settings.value(SETTINGS_AUDIO_INPUT_DEVICE);
     if (var.isValid() == true)
@@ -58,7 +54,6 @@ bool AudioCapturePortAudio::initialize()
     if (inputParameters.device == paNoDevice)
     {
         qWarning("Error: No default input device found.\n");
-        Pa_Terminate();
         return false;
     }
 
@@ -78,7 +73,6 @@ bool AudioCapturePortAudio::initialize()
     if( err != paNoError )
     {
         qWarning("Cannot open audio input stream (%s)\n",  Pa_GetErrorText(err));
-        Pa_Terminate();
         return false;
     }
 
@@ -89,7 +83,6 @@ bool AudioCapturePortAudio::initialize()
         qWarning("Cannot start stream capture (%s)\n",  Pa_GetErrorText(err));
         Pa_CloseStream( Stream );
         Stream = NULL;
-        Pa_Terminate();
         return false;
     }
 
@@ -112,10 +105,6 @@ void AudioCapturePortAudio::uninitialize()
     if( err != paNoError )
         qDebug() << "PortAudio error: " << Pa_GetErrorText( err );
     Stream = NULL;
-
-    err = Pa_Terminate();
-    if( err != paNoError )
-        qDebug() << "PortAudio error: " << Pa_GetErrorText( err );
 }
 
 qint64 AudioCapturePortAudio::latency()

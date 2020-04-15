@@ -44,7 +44,6 @@ public:
     qint64 latency();
 
     QList<AudioDeviceInfo> getDevicesInfo();
-    static bool firstInit;
 protected:
     /** @reimpl */
     qint64 writeAudio(unsigned char *data, qint64 maxSize);

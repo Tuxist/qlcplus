@@ -29,7 +29,7 @@
 #include "audiodecoder.h"
 #include "audiorenderer_portaudio.h"
 
-bool AudioRendererPortAudio::firstInit=false;
+bool firstInit=false;
 static int Instances=0;
 
 AudioRendererPortAudio::AudioRendererPortAudio(QString device, QObject * parent)
