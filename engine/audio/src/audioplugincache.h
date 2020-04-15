@@ -68,6 +68,8 @@ private:
 
     /** a list of output audio device for faster lookup */
     QList<QAudioDeviceInfo> m_outputDevicesList;
+    
+    AudioRenderer *audioRenderer;
 };
 
 /** @} */

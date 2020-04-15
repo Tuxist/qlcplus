@@ -30,6 +30,7 @@
 #include "audiorenderer_portaudio.h"
 
 bool AudioRendererPortAudio::firstInit=false;
+static int Instances=0;
 
 AudioRendererPortAudio::AudioRendererPortAudio(QString device, QObject * parent)
     : AudioRenderer(parent)
@@ -38,6 +39,14 @@ AudioRendererPortAudio::AudioRendererPortAudio(QString device, QObject * parent)
     , m_channels(0)
     , m_frameSize(0)
 {
+    Instances++;
+    if(!firstInit){
+    #ifdef PA_JACK
+        PaJack_SetClientName("QLCPlus");
+    #endif
+        firstInit=true;
+        Pa_Initialize();
+    }
 }
 
 AudioRendererPortAudio::~AudioRendererPortAudio()
@@ -46,9 +55,11 @@ AudioRendererPortAudio::~AudioRendererPortAudio()
     QMutexLocker locker(&m_paMutex);
 
     PaError err;
-    err = Pa_Terminate();
-    if( err != paNoError )
-        qDebug() << "PortAudio error: " << Pa_GetErrorText( err );
+    if(Instances>=0){
+        err = Pa_Terminate();
+        if( err != paNoError )
+            qDebug() << "PortAudio error: " << Pa_GetErrorText( err );
+    }
 }
 
 int AudioRendererPortAudio::dataCallback ( const void *, void *outputBuffer,
@@ -88,7 +99,6 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
     
     memset(&outputParameters,0,sizeof(outputParameters));
     
-    err = Pa_Initialize();
     if( err != paNoError )
         return false;
 
@@ -161,21 +171,8 @@ qint64 AudioRendererPortAudio::latency()
 
 QList<AudioDeviceInfo> AudioRendererPortAudio::getDevicesInfo()
 {
-    QList<AudioDeviceInfo> devList;
 
     int numDevices, err, i;
-
-    if(!firstInit){
-    #ifdef PA_JACK
-        PaJack_SetClientName("QLCPlus");
-    #endif
-        firstInit=true;
-    }
-
-    err = Pa_Initialize();
-    if( err != paNoError )
-        return devList;
-
     numDevices = Pa_GetDeviceCount();
     if( numDevices < 0 )
     {
@@ -199,11 +196,6 @@ QList<AudioDeviceInfo> AudioRendererPortAudio::getDevicesInfo()
             devList.append(info);
         }
     }
-
-    err = Pa_Terminate();
-    if( err != paNoError )
-        qDebug() << "PortAudio error: " << Pa_GetErrorText( err );
-
     return devList;
 }
 

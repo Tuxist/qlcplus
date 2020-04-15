@@ -43,7 +43,7 @@ public:
     /** @reimpl */
     qint64 latency();
 
-    static QList<AudioDeviceInfo> getDevicesInfo();
+    QList<AudioDeviceInfo> getDevicesInfo();
     static bool firstInit;
 protected:
     /** @reimpl */
@@ -74,7 +74,7 @@ private:
     QMutex m_paMutex;
     QByteArray m_buffer;
     QString m_device;
-
+    QList<AudioDeviceInfo> devList;
     int m_channels;
     int m_frameSize;
 };

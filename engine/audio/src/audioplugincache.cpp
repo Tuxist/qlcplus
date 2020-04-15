@@ -30,11 +30,13 @@
 AudioPluginCache::AudioPluginCache(QObject *parent)
     : QObject(parent)
 {
-    m_audioDevicesList = AudioRendererPortAudio::getDevicesInfo();
+    audioRenderer=new AudioRendererPortAudio(NULL);
+    m_audioDevicesList = audioRenderer->getDevicesInfo();
 }
 
 AudioPluginCache::~AudioPluginCache()
 {
+    delete audioRenderer;
 }
 
 void AudioPluginCache::load(const QDir &dir)

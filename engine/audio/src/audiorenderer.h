@@ -98,6 +98,8 @@ public:
     void setLooped(bool looped);
 
 
+    virtual QList<AudioDeviceInfo> getDevicesInfo()=0;
+    
     /*********************************************************************
      * Fade sequences
      *********************************************************************/
