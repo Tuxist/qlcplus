@@ -20,10 +20,6 @@
 #include <QSettings>
 #include <QDebug>
 
-#ifdef PA_JACK
-#include <pa_jack.h>
-#endif
-
 #include "audiocapture_portaudio.h"
 
 PaStream *AudioCapturePortAudio::Stream=NULL;
@@ -31,9 +27,6 @@ PaStream *AudioCapturePortAudio::Stream=NULL;
 AudioCapturePortAudio::AudioCapturePortAudio(QObject * parent)
     : AudioCapture(parent)
 {
-#ifdef PA_JACK
-    PaJack_SetClientName("QLCPlusCapture");
-#endif
 }
 
 AudioCapturePortAudio::~AudioCapturePortAudio()
@@ -47,7 +40,7 @@ bool AudioCapturePortAudio::initialize()
     PaError err;
     PaStreamParameters inputParameters;
     
-    memset( &inputParameters, 0 ,sizeof( inputParameters ) );
+    memset(&inputParameters,0,sizeof(inputParameters));
     
     Volume=1.0;
     
@@ -72,6 +65,7 @@ bool AudioCapturePortAudio::initialize()
     inputParameters.channelCount = m_channels;
     inputParameters.sampleFormat = paInt16;
     inputParameters.suggestedLatency = Pa_GetDeviceInfo( inputParameters.device )->defaultLowInputLatency;
+    inputParameters.hostApiSpecificStreamInfo = NULL;
 
     // ensure initialize() has not been called multiple times
     Q_ASSERT(AudioCapturePortAudio::Stream == NULL);

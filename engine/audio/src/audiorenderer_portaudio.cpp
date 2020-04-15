@@ -36,9 +36,6 @@ AudioRendererPortAudio::AudioRendererPortAudio(QString device, QObject * parent)
     , m_channels(0)
     , m_frameSize(0)
 {
-#ifdef PA_JACK
-    PaJack_SetClientName("QLCPlus");
-#endif
 }
 
 AudioRendererPortAudio::~AudioRendererPortAudio()
@@ -86,8 +83,8 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
     PaError err;
     PaStreamParameters outputParameters;
     PaStreamFlags flags = paNoFlag;
-
-    memset( &outputParameters, 0 ,sizeof( outputParameters ) );
+    
+    memset(&outputParameters,0,sizeof(outputParameters));
     
     err = Pa_Initialize();
     if( err != paNoError )
@@ -165,6 +162,10 @@ QList<AudioDeviceInfo> AudioRendererPortAudio::getDevicesInfo()
     QList<AudioDeviceInfo> devList;
 
     int numDevices, err, i;
+
+    #ifdef PA_JACK
+        PaJack_SetClientName("QLCPlus");
+    #endif
 
     err = Pa_Initialize();
     if( err != paNoError )
