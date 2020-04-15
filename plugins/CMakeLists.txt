@@ -242,25 +242,23 @@ target_link_libraries(hid Qt5::Widgets ${hidlink})
 install(TARGETS hid DESTINATION ${PLUGINDIR})
 
 #loopback plugin
-set(loopback_src
-    interfaces/qlcioplugin.cpp 
-    loopback/src/loopback.cpp
-)
 
 INCLUDE(GenerateExportHeader)
 SET(LOOPBACK_MOC_SOURCES)
 QT5_WRAP_CPP(
-    ${loopback_src}
     loopback/src/loopback.h
 )
 
-add_library(loopback SHARED 
+add_library(loopback SHARED
+    interfaces/qlcioplugin.cpp
+    loopback/src/loopback.cpp
     ${LOOPBACK_MOC_SOURCES}
 )
 
 GENERATE_EXPORT_HEADER(loopback)
 
-target_link_libraries(loopback Qt5::Core)
+target_link_libraries(loopback PUBLIC Qt5::Core) 
+
 install(TARGETS loopback DESTINATION ${PLUGINDIR})
 install(FILES loopback/src/org.qlcplus.QLCPlus.loopback.metainfo.xml DESTINATION ${METAINFODIR})
 

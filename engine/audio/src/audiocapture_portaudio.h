@@ -40,6 +40,7 @@ public:
     /** @reimpl */
     void setVolume(qreal volume);
     
+    static PaStream *Stream;
 protected:
     /** @reimpl */
     bool initialize();
@@ -57,7 +58,6 @@ protected:
     bool readAudio(int maxSize);
 private:
     float Volume;
-    PaStream *Stream;
 };
 
 /** @} */
