@@ -66,12 +66,12 @@ bool AudioCapturePortAudio::initialize()
     inputParameters.sampleFormat = paInt16;
     inputParameters.suggestedLatency = Pa_GetDeviceInfo( inputParameters.device )->defaultLowInputLatency;
     inputParameters.hostApiSpecificStreamInfo = NULL;
-
+  
     // ensure initialize() has not been called multiple times
     Q_ASSERT(AudioCapturePortAudio::Stream == NULL);
-    qWarning(m_sampleRate);
+
     /* -- setup stream -- */
-    err = Pa_OpenStream( &AudioCapturePortAudio::Stream, &inputParameters, NULL, m_sampleRate, paFramesPerBufferUnspecified,
+    err = Pa_OpenStream( &AudioCapturePortAudio::Stream, &inputParameters, NULL, (m_sampleRate), paFramesPerBufferUnspecified,
               paClipOff, /* we won't output out of range samples so don't bother clipping them */
               paNoFlag , /* no callback, use blocking API */
               NULL ); /* no callback, so no callback userData */

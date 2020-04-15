@@ -29,6 +29,8 @@
 #include "audiodecoder.h"
 #include "audiorenderer_portaudio.h"
 
+bool AudioRendererPortAudio::firstInit=false;
+
 AudioRendererPortAudio::AudioRendererPortAudio(QString device, QObject * parent)
     : AudioRenderer(parent)
     , m_paStream(NULL)
@@ -163,9 +165,12 @@ QList<AudioDeviceInfo> AudioRendererPortAudio::getDevicesInfo()
 
     int numDevices, err, i;
 
+    if(!firstInit){
     #ifdef PA_JACK
         PaJack_SetClientName("QLCPlus");
     #endif
+        firstInit=true;
+    }
 
     err = Pa_Initialize();
     if( err != paNoError )
