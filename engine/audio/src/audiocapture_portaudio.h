@@ -57,7 +57,7 @@ protected:
     /** @reimpl */
     bool readAudio(int maxSize);
 private:
-    float Volume;
+    qreal Volume;
 };
 
 /** @} */
