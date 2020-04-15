@@ -46,7 +46,9 @@ bool AudioCapturePortAudio::initialize()
 {
     PaError err;
     PaStreamParameters inputParameters;
-
+    
+    memset( &inputParameters, 0 ,sizeof( inputParameters ) );
+    
     Volume=1.0;
     
     err = Pa_Initialize();
@@ -67,11 +69,9 @@ bool AudioCapturePortAudio::initialize()
         return false;
     }
 
-    memset( &inputParameters, 0 ,sizeof( inputParameters ) );
     inputParameters.channelCount = m_channels;
     inputParameters.sampleFormat = paInt16;
     inputParameters.suggestedLatency = Pa_GetDeviceInfo( inputParameters.device )->defaultLowInputLatency;
-    inputParameters.hostApiSpecificStreamInfo = NULL;
 
     // ensure initialize() has not been called multiple times
     Q_ASSERT(AudioCapturePortAudio::Stream == NULL);
@@ -80,7 +80,7 @@ bool AudioCapturePortAudio::initialize()
     err = Pa_OpenStream( &AudioCapturePortAudio::Stream, &inputParameters, NULL, m_sampleRate, paFramesPerBufferUnspecified,
               paClipOff, /* we won't output out of range samples so don't bother clipping them */
               paNoFlag , /* no callback, use blocking API */
-              this ); /* no callback, so no callback userData */
+              NULL ); /* no callback, so no callback userData */
     if( err != paNoError )
     {
         qWarning("Cannot open audio input stream (%s)\n",  Pa_GetErrorText(err));
@@ -98,7 +98,7 @@ bool AudioCapturePortAudio::initialize()
         Pa_Terminate();
         return false;
     }
-    
+
     return true;
 }
 
@@ -154,10 +154,6 @@ bool AudioCapturePortAudio::readAudio(int maxSize)
     
     qDebug() << "[PORTAUDIO readAudio] " << maxSize << "bytes read";
 
-    long gain = 0x4000;
-    long sample = *m_audioBuffer++;
-    long result = (gain * sample) > 15;
-    *m_audioBuffer++ = (short)result;
-    
+//     *m_audioBuffer=(short)(*m_audioBuffer*Volume);
     return true;
 }
