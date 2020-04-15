@@ -15,9 +15,7 @@ add_executable(qlcplus ${qlcplus_src} ../ui/src/qlcui.qrc)
 
 target_link_libraries(qlcplus
     Qt5::Widgets
-    qlcplusengine
     qlcplusui
-    qlcpluswebaccess
 )
 
 install(TARGETS qlcplus DESTINATION "${APPROOT}/bin")

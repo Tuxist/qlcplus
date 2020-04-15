@@ -263,7 +263,7 @@ void PreviewThread::run()
 
         // 2- decode the whole file and fill a QPixmap with a sample block RMS value for each pixel
         qint64 dataRead = 1;
-        unsigned char audioData[onePixelReadLen * 4];
+        unsigned char *audioData=new unsigned char [onePixelReadLen * 4];
         quint32 audioDataOffset = 0;
         QPixmap *preview = new QPixmap((50 * m_item->m_audio->totalDuration()) / 1000, 76);
         preview->fill(Qt::transparent);

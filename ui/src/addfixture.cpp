@@ -45,6 +45,7 @@
 #define SETTINGS_GEOMETRY "addfixture/geometry"
 
 #define KColumnName 0
+#define maxChannels 512
 
 AddFixture::AddFixture(QWidget* parent, const Doc* doc, const Fixture* fxi)
     : QDialog(parent)
@@ -387,7 +388,6 @@ quint32 AddFixture::findAddress(quint32 universe, quint32 numChannels,
                                 QList<Fixture*> const& fixtures, quint32 currentFixture)
 {
     quint32 freeSpace = 0;
-    quint32 maxChannels = 512;
 
     /* Construct a map of unallocated channels */
     int map[maxChannels];
