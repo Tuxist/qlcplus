@@ -66,7 +66,7 @@ bool AudioCapturePortAudio::initialize()
     Q_ASSERT(Stream == NULL);
 
     /* -- setup stream -- */
-    err = Pa_OpenStream( &Stream, &inputParameters, NULL, (m_sampleRate), paFramesPerBufferUnspecified,
+    err = Pa_OpenStream( &Stream, &inputParameters, NULL, m_sampleRate, paFramesPerBufferUnspecified,
               paClipOff, /* we won't output out of range samples so don't bother clipping them */
               paNoFlag , /* no callback, use blocking API */
               NULL ); /* no callback, so no callback userData */
