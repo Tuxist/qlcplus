@@ -189,7 +189,7 @@ QList<AudioDeviceInfo> AudioRendererPortAudio::getDevicesInfo()
         if (deviceInfo != NULL)
         {
             AudioDeviceInfo info;
-            info.deviceName = QString(deviceInfo->name);
+            info.deviceName = QString(Pa_GetHostApiInfo(deviceInfo->hostApi)->name).append(": ").append(deviceInfo->name);
             info.privateName = QString::number(i);
             info.capabilities = 0;
             if (deviceInfo->maxInputChannels > 0)
