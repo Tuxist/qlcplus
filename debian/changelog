@@ -1,10 +1,15 @@
 qlcplus (4.12.3) stable; urgency=low
 
   * engine: fix cloning a Show
+  * engine: audio/video files not found are now shown in error log
+  * engine: reduce audio playback startup latency in some cases
   * UI: fix virtual console resize
   * UI: fix crash on 2D monitor strobing
+  * UI/Audio Editor: fix selected device index (thanks to Santiago Benejam Torres)
   * Virtual Console: fix Animation and Audio Trigger widgets to respond to submaster (thanks to Branimir Amidžić)
   * Virtual Console: fix submaster not affecting a Sequence in a Cue List (thanks to ryhel)
+  * Resources: added Novation Launch Control XL input profile (thanks to pille)
+  * Resources: updated Novation Launchpad Pro input profile (thanks to Nate Doyon)
   * New fixtures: Cameo Auro Spot 300, Auro Spot 400, Storm, Zenit B60 (thanks to Jannis Achstetter and Henrik Bauer)
   * New fixtures: American DJ Vizi Wash LED 108, Eurolite LED B-40 Beam, Eurolite TMH X3 (thanks to Jannis Achstetter and Henrik Bauer)
   * New fixtures: Litecraft OutLED AT10, Litecraft WashX.36, Martin JEM ZR24-7 (thanks to Jannis Achstetter and Henrik Bauer)

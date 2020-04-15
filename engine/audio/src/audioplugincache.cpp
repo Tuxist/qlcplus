@@ -118,3 +118,14 @@ QList<AudioDeviceInfo> AudioPluginCache::audioDevicesList() const
 {
     return m_audioDevicesList;
 }
+
+QAudioDeviceInfo AudioPluginCache::getOutputDeviceInfo(QString devName) const
+{
+    foreach (const QAudioDeviceInfo &deviceInfo, m_outputDevicesList)
+    {
+        if (deviceInfo.deviceName() == devName)
+            return deviceInfo;
+    }
+
+    return QAudioDeviceInfo::defaultOutputDevice();
+}

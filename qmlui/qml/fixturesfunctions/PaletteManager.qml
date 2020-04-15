@@ -30,6 +30,8 @@ Rectangle
     anchors.fill: parent
     color: "transparent"
 
+    property bool allowEditing: true
+
     function setTypeFilter(pType, checked)
     {
         if (checked === true)
@@ -130,10 +132,24 @@ Rectangle
                 z: 2
                 width: height
                 height: topBar.height - 2
+                visible: allowEditing
                 imgSource: "qrc:/remove.svg"
                 tooltip: qsTr("Delete the selected palette(s)")
                 //counter: paletteManager.positionCount
-                onClicked: {}
+                onClicked:
+                {
+                    var selNames = paletteManager.selectedItemNames(pmSelector.itemsList())
+                    //console.log(selNames)
+                    deleteItemsPopup.message = qsTr("Are you sure you want to delete the following items?") + "\n" + selNames
+                    deleteItemsPopup.open()
+                }
+
+                CustomPopupDialog
+                {
+                    id: deleteItemsPopup
+                    title: qsTr("Delete items")
+                    onAccepted: paletteManager.deletePalettes(pmSelector.itemsList())
+                }
             }
         } // RowLayout
       } // Rectangle - topBar
@@ -318,6 +334,8 @@ Rectangle
 
         onLoaded:
         {
+            item.width = toolLoader.width
+            item.height = toolLoader.height
             item.loadPalette(paletteID)
         }
     }

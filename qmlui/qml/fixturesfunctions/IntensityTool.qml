@@ -38,7 +38,7 @@ Rectangle
 
     onCurrentValueChanged:
     {
-        if (paletteBox.checked)
+        if (paletteBox.isEditing || paletteBox.checked)
         {
             paletteBox.updatePreview()
         }
@@ -58,8 +58,8 @@ Rectangle
             dragTopBar.visible = false
             paletteToolbar.visible = true
             paletteToolbar.text = palette.name
-            currentValue = dmxValues ? palette.intValue1 : palette.intValue1 / 255
-            paletteBox.palette = palette
+            paletteBox.editPalette(palette, palette.intValue1, palette.intValue2)
+            currentValue = dmxValues ? palette.intValue1 : palette.intValue1 / 2.55
         }
     }
 
@@ -111,7 +111,7 @@ Rectangle
             id: paletteToolbar
             visible: false
             onBackClicked: intRoot.parent.dismiss()
-            onTextChanged: paletteBox.palette.name = text
+            onTextChanged: if (paletteBox.palette) paletteBox.palette.name = text
         }
 
         // main control 'widget'
