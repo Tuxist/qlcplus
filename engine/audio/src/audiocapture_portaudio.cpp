@@ -136,7 +136,8 @@ bool AudioCapturePortAudio::readAudio(int maxSize)
     }
     
     qDebug() << "[PORTAUDIO readAudio] " << maxSize << "bytes read";
-
-//     *m_audioBuffer=(short)(*m_audioBuffer*Volume);
+    long gain = 0x4000;
+    long sample = *m_audioBuffer++;
+    *m_audioBuffer++ = (short)(Volume * sample) > 15;
     return true;
 }
