@@ -35,7 +35,7 @@ PATHS /usr/lib
       /usr/local/lib
       /opt/local/lib
       /sw/lib
-      ${extern_lib_path}/*
+      ${extern_lib_path}
 )
 
 # set path to DLL for later installation
