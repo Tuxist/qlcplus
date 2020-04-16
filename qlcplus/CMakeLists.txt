@@ -138,14 +138,20 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/monitor 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/showmanager
     ${CMAKE_CURRENT_SOURCE_DIR}/src/virtualconsole
+    ${CMAKE_BINARY_DIR}/engine
+    ${CMAKE_SOURCE_DIR}/engine/src
+    ${CMAKE_SOURCE_DIR}/ui/src/
+    ${CMAKE_SOURCE_DIR}/ui/src/virtualconsole
+    ${CMAKE_SOURCE_DIR}/webaccess/src/
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Script_INCLUDE_DIRS}
     ${Qt5Multimedia_INCLUDE_DIRS}
     ${Qt5MultimediaWidgets_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
+
 )
 
-add_library(qlcplusui SHARED ${qlcplusui_src})
+add_library(qlcplusui OBJECT ${qlcplusui_src})
 
 target_link_libraries(qlcplusui 
     Qt5::Widgets 
@@ -156,5 +162,15 @@ target_link_libraries(qlcplusui
     qlcplusengine
     qlcpluswebaccess
 )
+set(qlcplus_src 
+    src/main.cpp
+)
 
-install(TARGETS qlcplusui DESTINATION "${LIBSDIR}")
+add_executable(qlcplus ${qlcplus_src} src/qlcui.qrc)
+
+target_link_libraries(qlcplus
+    Qt5::Widgets
+    qlcplusui
+)
+
+install(TARGETS qlcplus DESTINATION "${APPROOT}/bin")

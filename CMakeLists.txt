@@ -129,8 +129,8 @@ install(DIRECTORY resources/ DESTINATION ${DATADIR}
 
 add_subdirectory(hotplugmonitor)
 add_subdirectory(engine)
-add_subdirectory(ui)
 add_subdirectory(webaccess)
 add_subdirectory(launcher)
-add_subdirectory(main)
 add_subdirectory(plugins)
+add_subdirectory(qlcplus)
+add_subdirectory(qlcpro)
