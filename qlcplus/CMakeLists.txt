@@ -153,7 +153,7 @@ include_directories(
 
 add_library(qlcplusui OBJECT ${qlcplusui_src})
 
-target_link_libraries(qlcplusui 
+target_link_libraries(qlcplusui
     Qt5::Widgets 
     Qt5::Script
     Qt5::Multimedia
