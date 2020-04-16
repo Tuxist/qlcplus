@@ -25,6 +25,7 @@ include_directories(
 
 add_executable(qlcplus-fixtureeditor 
     ${fixeditor_src}
+    qlcui.qrc
 )
 
 target_link_libraries(qlcplus-fixtureeditor
