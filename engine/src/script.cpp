@@ -80,38 +80,30 @@ void *Script::operator new(size_t size,void *ptr)
 }
 
 void Script::Reinitalize(Script* ins,Doc* doc){
-    void *longptr;
     switch(Script::ScriptVersion){
         case 4:{
-            longptr=(new (ins) ScriptV4(doc));
-            ins=qobject_cast<Script*> ((ScriptV4*)longptr);
+            ins=qobject_cast<Script*> (new (ins) ScriptV4(doc));
             break;
         }case 3:{
-            longptr=(new (ins) ScriptV3(doc));
-            ins=qobject_cast<Script*> ((ScriptV3*)longptr);
+            ins=qobject_cast<Script*> (new (ins) ScriptV3(doc));
             break;
         }default:{
-            longptr=NULL;
             qDebug("No Script Version Set !");
-            break;
+            exit(1);
         }
     }
-    ins->ScriptIns=longptr;
 }
 
 Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
-    ScriptIns=NULL;
     if(reinitalize)
         Reinitalize(this,doc);
+    else
+        ScriptIns=NULL;
 }
 
 Script::~Script()
 {
-    if(this->ScriptIns && this->ScriptIns == this)
-    {
-        this->ScriptIns = NULL;
-    }
-    delete (Script*)this->ScriptIns;
+    this->ScriptIns=NULL;
 }
 
 QIcon Script::getIcon() const

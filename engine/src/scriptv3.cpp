@@ -45,10 +45,16 @@ ScriptV3::ScriptV3(Doc* doc) : Script(doc,false)
     , m_waitCount(0) 
 {
     setName(tr("New Script"));
+    this->ScriptIns=this;
 }
 
 ScriptV3::~ScriptV3()
 {
+    if(this->ScriptIns && this->ScriptIns == this)
+    {
+        this->ScriptIns = NULL;
+    }
+    delete (ScriptV3*)this->ScriptIns;
 }
 
 QIcon ScriptV3::getIcon() const

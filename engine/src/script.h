@@ -111,7 +111,7 @@ public:
     bool saveXML(QXmlStreamWriter *doc) override;
 protected slots:
     virtual void slotRunnerFinished();
-private:
+protected:
     void *ScriptIns;
 };
 

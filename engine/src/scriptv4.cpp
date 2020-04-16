@@ -40,10 +40,16 @@ ScriptV4::ScriptV4(Doc* doc) : Script(doc,false)
     , m_runner(NULL) 
 {
     setName(tr("New Script"));
+    this->ScriptIns=this;
 }
 
 ScriptV4::~ScriptV4()
 {
+    if(this->ScriptIns && this->ScriptIns == this)
+    {
+        this->ScriptIns = NULL;
+    }
+    delete (ScriptV4*)this->ScriptIns;
 }
 
 QIcon ScriptV4::getIcon() const
