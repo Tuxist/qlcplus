@@ -57,7 +57,7 @@ public:
     virtual void postRun(MasterTimer *timer, QList<Universe*> universes)=0;
 protected slots:
     virtual void slotRunnerFinished()=0;
-
+protected:
     friend class Script;
 };
 
