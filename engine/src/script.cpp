@@ -18,7 +18,7 @@
 */
 
 #include <QDebug>
-#include <string.h>
+#include <typeinfo>
 
 #include "function.h"
 #include "scriptv3.h"
@@ -47,15 +47,15 @@ void *Script::operator new(size_t size)
 {
     switch(Script::ScriptVersion){
         case 4:{
-            size+=sizeof(ScriptV4);
+            size=sizeof(ScriptV4);
             break;
         };
         case 3:{
-            size+=sizeof(ScriptV3);
+            size=sizeof(ScriptV3);
             break;
         };
         default:{
-            exit(1);
+            break;
         };
     }
     return ::operator new(size);
@@ -63,31 +63,55 @@ void *Script::operator new(size_t size)
 
 void *Script::operator new(size_t size,void *ptr)
 {
+    switch(Script::ScriptVersion){
+        case 4:{
+            size=sizeof(ScriptV4);
+            break;
+        };
+        case 3:{
+            size=sizeof(ScriptV3);
+            break;
+        };
+        default:{
+            break;
+        };
+    }
     return ::operator new(size,ptr);
 }
 
 void Script::Reinitalize(Script* ins,Doc* doc){
+    void *longptr;
     switch(Script::ScriptVersion){
         case 4:{
-            ins=qobject_cast<Script*> (new (ins) ScriptV4(doc));
+            longptr=(new (ins) ScriptV4(doc));
+            ins=qobject_cast<Script*> ((ScriptV4*)longptr);
             break;
         }case 3:{
-            ins=qobject_cast<Script*> (new (ins) ScriptV3(doc));
+            longptr=(new (ins) ScriptV3(doc));
+            ins=qobject_cast<Script*> ((ScriptV3*)longptr);
             break;
         }default:{
-            exit(1);
+            longptr=NULL;
+            qDebug("No Script Version Set !");
+            break;
         }
     }
+    ins->ScriptIns=longptr;
 }
 
 Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
-    if(reinitalize){
+    ScriptIns=NULL;
+    if(reinitalize)
         Reinitalize(this,doc);
-    }
 }
 
 Script::~Script()
 {
+    if(this->ScriptIns && this->ScriptIns == this)
+    {
+        this->ScriptIns = NULL;
+    }
+    delete (Script*)this->ScriptIns;
 }
 
 QIcon Script::getIcon() const
@@ -180,5 +204,4 @@ ScriptApi::ScriptApi(Doc* doc) : Function(doc,Function::ScriptType){
 }
 
 ScriptApi::~ScriptApi(){
-    
 }
