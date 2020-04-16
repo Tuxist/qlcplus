@@ -55,7 +55,8 @@ void *Script::operator new(size_t size)
             break;
         };
         default:{
-            break;
+            qDebug("No Script Version Set !");
+            exit(1);
         };
     }
     return ::operator new(size);
@@ -73,7 +74,8 @@ void *Script::operator new(size_t size,void *ptr)
             break;
         };
         default:{
-            break;
+            qDebug("No Script Version Set !");
+            exit(1);
         };
     }
     return ::operator new(size,ptr);
@@ -103,92 +105,95 @@ Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
 
 Script::~Script()
 {
-    this->ScriptIns=NULL;
 }
 
 QIcon Script::getIcon() const
 {
-    return (QIcon)0;
+    return ((Script*)ScriptIns)->getIcon();
 };
 
 quint32 Script::totalDuration()
 {
-    return 0;
+    return ((Script*)ScriptIns)->totalDuration();
 };
 
 Function* Script::createCopy(Doc* doc, bool addToDoc)
 {
-    return 0;
+    return ((Script*)ScriptIns)->createCopy(doc,addToDoc);
 };
 
 bool Script::copyFrom(const Function* function)
 {
-    return false;
+    return ((Script*)ScriptIns)->copyFrom(function);
 };
 
 bool Script::setData(const QString& str)
 {
-    return false;
+    return ((Script*)ScriptIns)->setData(str);
 };
 
 bool Script::appendData(const QString& str)
 {
-    return false;
+    return ((Script*)ScriptIns)->appendData(str);
 };
 
 QString Script::data() const
 {
-    return 0;
+    return ((Script*)ScriptIns)->data();
 };
 
 QStringList Script::dataLines() const{
-    return (QStringList) 0;
+    return ((Script*)ScriptIns)->dataLines();
 };
 
 QList<quint32> Script::functionList() const
 {
-    return {0};
+    return ((Script*)ScriptIns)->functionList();
 };
 
 QList<quint32> Script::fixtureList() const
 {
-    return {0};
+    return ((Script*)ScriptIns)->fixtureList();
 };
 
 QList<int> Script::syntaxErrorsLines()
 {
-    return{0};
+    return ((Script*)ScriptIns)->syntaxErrorsLines();
 };
 
 QStringList Script::syntaxErrorsLinesString()
 {
-    return {0};
+    return ((Script*)ScriptIns)->syntaxErrorsLinesString();
 };
 
 void Script::preRun(MasterTimer *timer)
 {
+    ((Script*)ScriptIns)->preRun(timer);
 };
 
 void Script::write(MasterTimer *timer, QList<Universe*> universes)
 {
+    ((Script*)ScriptIns)->write(timer,universes);
 };
 
 void Script::postRun(MasterTimer *timer, QList<Universe*> universes)
 {
+    ((Script*)ScriptIns)->postRun(timer,universes);
 };
 
 bool Script::loadXML(QXmlStreamReader &root)
 {
-    return false;
+    return ((Script*)ScriptIns)->loadXML(root);
 };
 
 bool Script::saveXML(QXmlStreamWriter *doc)
 {
-    return false;
+    return ((Script*)ScriptIns)->saveXML(doc);
 };
 
 void Script::slotRunnerFinished()
 {
+    ((Script*)ScriptIns)->slotRunnerFinished();
 };
 
 ScriptApi::ScriptApi(Doc* doc) : Function(doc,Function::ScriptType){
