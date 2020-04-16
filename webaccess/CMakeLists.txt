@@ -16,9 +16,9 @@ include_directories(
     ${CMAKE_BINARY_DIR}/engine/
     ${CMAKE_SOURCE_DIR}/engine/src/
     ${CMAKE_SOURCE_DIR}/engine/audio/src/    
-    ${CMAKE_BINARY_DIR}/ui/src/
-    ${CMAKE_SOURCE_DIR}/ui/src/
-    ${CMAKE_SOURCE_DIR}/ui/src/virtualconsole/
+    ${CMAKE_BINARY_DIR}/qlcplus/src/
+    ${CMAKE_SOURCE_DIR}/qlcplus/src/
+    ${CMAKE_SOURCE_DIR}/qlcplus/src/virtualconsole/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/qhttpserver/
     ${Qt5Network_INCLUDE_DIRS}
 )

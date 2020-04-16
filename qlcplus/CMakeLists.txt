@@ -129,7 +129,7 @@ set(qlcplusui_src
 
 include_directories(
     ${CMAKE_BINARY_DIR}/engine
-    ${CMAKE_SOURCE_DIR}/ui/src
+    ${CMAKE_SOURCE_DIR}/qlcplus/src
     ../engine/src 
     ../engine/audio/src
     ../hotplugmonitor/src
@@ -140,8 +140,8 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/virtualconsole
     ${CMAKE_BINARY_DIR}/engine
     ${CMAKE_SOURCE_DIR}/engine/src
-    ${CMAKE_SOURCE_DIR}/ui/src/
-    ${CMAKE_SOURCE_DIR}/ui/src/virtualconsole
+    ${CMAKE_SOURCE_DIR}/qlcplus/src/
+    ${CMAKE_SOURCE_DIR}/qlcplus/src/virtualconsole
     ${CMAKE_SOURCE_DIR}/webaccess/src/
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Script_INCLUDE_DIRS}
