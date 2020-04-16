@@ -30,3 +30,5 @@ add_executable(qlcplus-fixtureeditor
 target_link_libraries(qlcplus-fixtureeditor
     qlcplusengine
 )
+
+install(TARGETS qlcplus-fixtureeditor DESTINATION "${APPROOT}/bin")
