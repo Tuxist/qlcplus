@@ -9,6 +9,8 @@ set(fixeditor_src
     fixtureeditor.cpp
     main.cpp
     aboutbox.cpp
+    docbrowser.cpp
+    apputil.cpp
 ) 
 
 include_directories(
