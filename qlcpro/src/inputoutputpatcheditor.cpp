@@ -117,6 +117,7 @@ InputOutputPatchEditor::InputOutputPatchEditor(QWidget* parent, quint32 universe
     setupProfilePage();
 
     QSettings settings;
+    
     QVariant var = settings.value(SETTINGS_HOTPLUG);
     if (var.isValid() && var.toBool() == true)
         m_hotplugButton->setChecked(true);
@@ -348,7 +349,7 @@ void InputOutputPatchEditor::fillMappingTree()
 
     m_mapTree->resizeColumnToContents(KMapColumnPluginName);
     m_mapTree->resizeColumnToContents(KMapColumnDeviceName);
-
+    
     /* Enable check state change tracking after the tree has been filled */
     connect(m_mapTree, SIGNAL(itemChanged(QTreeWidgetItem*,int)),
             this, SLOT(slotMapItemChanged(QTreeWidgetItem*, int)));
@@ -932,6 +933,8 @@ void InputOutputPatchEditor::initAudioTab()
 
     m_audioMapTree->resizeColumnToContents(KAudioColumnDeviceName);
 
+    slotAudioUpdateSampleRates(var.toString());
+    
     var = settings.value(SETTINGS_AUDIO_INPUT_SRATE);
     if (var.isValid())
     {
@@ -1019,7 +1022,7 @@ void InputOutputPatchEditor::slotAudioDeviceItemChanged(QTreeWidgetItem *item, i
             defItem->setCheckState(KAudioColumnHasOutput, Qt::Checked);
         }
     }
-
+    slotAudioUpdateSampleRates(item->text(KAudioColumnPrivate));
     /* Start listening to this signal once again */
     connect(m_audioMapTree, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
             this, SLOT(slotAudioDeviceItemChanged(QTreeWidgetItem*, int)));
@@ -1077,4 +1080,14 @@ void InputOutputPatchEditor::slotAudioUpdateLevel(double *spectrumBands, int siz
     Q_UNUSED(maxMagnitude)
 
     m_levelProgress->setValue(power);
+}
+
+void InputOutputPatchEditor::slotAudioUpdateSampleRates(QString Device)
+{
+    AudioDeviceInfo audioinf=m_doc->audioPluginCache()->getDeviceInfo(Device);
+    m_srateCombo->clear();
+    foreach(const int sampleRateIter , audioinf.sampleRates){
+        qDebug() << sampleRateIter;
+        m_srateCombo->addItem(QString::number(sampleRateIter));
+    }
 }

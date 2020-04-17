@@ -99,9 +99,6 @@ bool AudioRendererPortAudio::initialize(quint32 freq, int chan, AudioFormat form
     
     memset(&outputParameters,0,sizeof(outputParameters));
     
-    if( err != paNoError )
-        return false;
-
     if (m_device.isEmpty())
     {
         QSettings settings;
@@ -186,8 +183,25 @@ QList<AudioDeviceInfo> AudioRendererPortAudio::getDevicesInfo()
         if (deviceInfo != NULL)
         {
             AudioDeviceInfo info;
-            info.deviceName = QString(Pa_GetHostApiInfo(deviceInfo->hostApi)->name).append(": ").append(deviceInfo->name);
+            const PaHostApiInfo *hostapi=Pa_GetHostApiInfo(deviceInfo->hostApi);
+            info.deviceName = QString(hostapi->name).append(": ").append(deviceInfo->name);
             info.privateName = QString::number(i);
+            PaStreamParameters inputParameters;
+            memset(&inputParameters,0,sizeof(inputParameters));
+            inputParameters.device=i;
+            inputParameters.channelCount = m_channels >= 0 ? 1 : m_channels;
+            inputParameters.sampleFormat = paInt16;
+            for(int ii=0; standardSampleRates[ii] > 0; ++ii )
+            {
+                int ferr = Pa_IsFormatSupported(&inputParameters,NULL,standardSampleRates[ii]);
+                if( ferr == paFormatIsSupported ){
+                    info.sampleRates.push_back(standardSampleRates[ii]);
+                    qDebug() << "Supported samplerate: " << standardSampleRates[ii];
+                }else{
+                    qDebug() << "Unsupported samplerate: " <<  (double)standardSampleRates[ii];
+                }
+
+            }
             info.capabilities = 0;
             if (deviceInfo->maxInputChannels > 0)
                 info.capabilities |= AUDIO_CAP_INPUT;

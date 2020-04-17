@@ -58,6 +58,12 @@ public:
     /** Return a Qt output device info match based on $devName */
     QAudioDeviceInfo getOutputDeviceInfo(QString devName) const;
 
+     /** Return a the input device info match based on $devName */
+    AudioDeviceInfo getDeviceInfo(QString devName) const;
+
+    /** Return a the input device info match based on $devId */
+    AudioDeviceInfo getDeviceInfo(int id) const;
+    
 private:
     /** a map of the vailable plugins ordered by priority */
     QMap<int, QString> m_pluginsMap;

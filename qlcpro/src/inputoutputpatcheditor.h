@@ -121,7 +121,8 @@ private slots:
     void slotAudioChannelsChanged(int index);
     void slotAudioInputPreview(bool enable);
     void slotAudioUpdateLevel(double *spectrumBands, int size, double maxMagnitude, quint32 power);
-
+    void slotAudioUpdateSampleRates(QString Device);
+    
 private:
     AudioCapture *m_inputCapture;
 };

@@ -131,3 +131,14 @@ QAudioDeviceInfo AudioPluginCache::getOutputDeviceInfo(QString devName) const
 
     return QAudioDeviceInfo::defaultOutputDevice();
 }
+
+ AudioDeviceInfo AudioPluginCache::getDeviceInfo(QString devName) const
+ {
+    foreach (const AudioDeviceInfo &deviceInfo, m_audioDevicesList)
+    {
+        if (deviceInfo.deviceName.compare(devName)==0 || 
+            deviceInfo.privateName.compare(devName)==0)
+            return deviceInfo;
+    }
+    return AudioDeviceInfo();
+ }

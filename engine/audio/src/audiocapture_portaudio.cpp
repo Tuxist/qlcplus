@@ -134,8 +134,11 @@ bool AudioCapturePortAudio::readAudio(int maxSize)
         qWarning("read from audio interface failed (%s)\n", Pa_GetErrorText (err));
         return false;
     }
-    
     qDebug() << "[PORTAUDIO readAudio] " << maxSize << "bytes read";
-    *m_audioBuffer++ = (short) (Volume * (m_sampleRate/maxSize));
+    for (int i = 0; i < maxSize; i++)
+    {
+          m_audioBuffer[i]=(short)((float)m_audioBuffer[i]*Volume);
+    }
+    qDebug() << "Buffer" << *m_audioBuffer;
     return true;
 }

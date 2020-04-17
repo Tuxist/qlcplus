@@ -36,10 +36,28 @@
 
 #define SETTINGS_AUDIO_OUTPUT_DEVICE "audio/output"
 
+const int standardSampleRates[]={
+    8000,
+    11025,
+    16000,
+    22050,
+    44100,
+    48000,
+    88200,
+    96000,
+    176000,
+    192000,
+    352800,
+    384000,
+    -1
+};
+
 typedef struct
 {
     QString deviceName;
     QString privateName;
+    int defaultSampleRate;
+    QList<int> sampleRates;
     int capabilities;
 } AudioDeviceInfo;
 

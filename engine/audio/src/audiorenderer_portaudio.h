@@ -41,6 +41,9 @@ public:
     bool initialize(quint32, int, AudioFormat format);
 
     /** @reimpl */
+    int getDefaultSampleRate();
+    
+    /** @reimpl */
     qint64 latency();
 
     QList<AudioDeviceInfo> getDevicesInfo();
