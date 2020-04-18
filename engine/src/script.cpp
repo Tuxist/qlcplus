@@ -47,11 +47,11 @@ void *Script::operator new(size_t size)
 {
     switch(Script::ScriptVersion){
         case 4:{
-            size+=sizeof(ScriptV4);
+            size=sizeof(ScriptV4);
             break;
         };
         case 3:{
-            size+=sizeof(ScriptV3);
+            size=sizeof(ScriptV3);
             break;
         };
         default:{
@@ -66,11 +66,11 @@ void *Script::operator new(size_t size,void *ptr)
 {
     switch(Script::ScriptVersion){
         case 4:{
-            size+=sizeof(ScriptV4);
+            size=sizeof(ScriptV4);
             break;
         };
         case 3:{
-            size+=sizeof(ScriptV3);
+            size=sizeof(ScriptV3);
             break;
         };
         default:{

@@ -42,7 +42,7 @@ bool AudioCapturePortAudio::initialize()
     
     memset(&inputParameters,0,sizeof(inputParameters));
     
-    Volume=100.0;
+    Volume=1.0;
     
     QSettings settings;
     QVariant var = settings.value(SETTINGS_AUDIO_INPUT_DEVICE);
@@ -66,7 +66,7 @@ bool AudioCapturePortAudio::initialize()
     Q_ASSERT(Stream == NULL);
 
     /* -- setup stream -- */
-    err = Pa_OpenStream( &Stream, &inputParameters, NULL, m_sampleRate, m_captureSize,
+    err = Pa_OpenStream( &Stream, &inputParameters, NULL, m_sampleRate, paFramesPerBufferUnspecified,
               paClipOff, /* we won't output out of range samples so don't bother clipping them */
               paNoFlag , /* no callback, use blocking API */
               NULL ); /* no callback, so no callback userData */
@@ -113,7 +113,7 @@ qint64 AudioCapturePortAudio::latency()
 }
 
 void AudioCapturePortAudio::setVolume(qreal volume){
-    Volume=(volume*100);
+    Volume=volume;
 }
 
 void AudioCapturePortAudio::suspend()
@@ -134,9 +134,8 @@ bool AudioCapturePortAudio::readAudio(int maxSize)
         return false;
     }
     qDebug() << "[PORTAUDIO readAudio] " << maxSize << "bytes read";
-    for (int i = 0; i < maxSize; i++)
-    {
-          m_audioBuffer[i]=(short)((float)m_audioBuffer[i]*Volume);
+    for(int i=0; i<maxSize; ++i){
+        m_audioBuffer[i]=(short)m_audioBuffer[i]*Volume;
     }
     qDebug() << "Buffer" << *m_audioBuffer;
     return true;
