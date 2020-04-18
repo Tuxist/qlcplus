@@ -50,11 +50,6 @@ ScriptV3::ScriptV3(Doc* doc) : Script(doc,false)
 
 ScriptV3::~ScriptV3()
 {
-    if(this->ScriptIns && this->ScriptIns == this)
-    {
-        this->ScriptIns = NULL;
-    }
-    delete (ScriptV3*)this->ScriptIns;
 }
 
 QIcon ScriptV3::getIcon() const

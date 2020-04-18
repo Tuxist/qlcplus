@@ -43,73 +43,78 @@ const QString Script::jumpCmd = QString("jump");
 const QString Script::blackoutOn = QString("on");
 const QString Script::blackoutOff = QString("off");
 
-void *Script::operator new(size_t size)
+void *Script::operator new(size_t size,bool reinitalized)
 {
-    switch(Script::ScriptVersion){
-        case 4:{
-            size=sizeof(ScriptV4);
-            break;
-        };
-        case 3:{
-            size=sizeof(ScriptV3);
-            break;
-        };
-        default:{
-            qDebug("No Script Version Set !");
-            exit(1);
-        };
+    if(reinitalized){
+        switch(Script::ScriptVersion){
+            case 4:{
+                size=sizeof(ScriptV4);
+                break;
+            };
+            case 3:{
+                size=sizeof(ScriptV3);
+                break;
+            };
+            default:{
+                qDebug("No Script Version Set !");
+                exit(1);
+            };
+        }
     }
     return ::operator new(size);
 }
 
-void *Script::operator new(size_t size,void *ptr)
+void *Script::operator new(size_t size,void *ptr,bool reinitalized)
 {
-    switch(Script::ScriptVersion){
-        case 4:{
-            size=sizeof(ScriptV4);
-            break;
-        };
-        case 3:{
-            size=sizeof(ScriptV3);
-            break;
-        };
-        default:{
-            qDebug("No Script Version Set !");
-            exit(1);
-        };
+    if(reinitalized){
+        switch(Script::ScriptVersion){
+            case 4:{
+                size=sizeof(ScriptV4);
+                break;
+            };
+            case 3:{
+                size=sizeof(ScriptV3);
+                break;
+            };
+            default:{
+                qDebug("No Script Version Set !");
+                exit(1);
+            };
+        }
     }
     return ::operator new(size,ptr);
 }
 
-void Script::Reinitalize(Script* ins,Doc* doc){
+void *Script::Reinitalize(Script* ins,Doc* doc){
+    void *ptr=NULL;
     switch(Script::ScriptVersion){
         case 4:{
-            ins=qobject_cast<Script*> (new (ins) ScriptV4(doc));
+            ptr=qobject_cast<Script*> (new (ins,false) ScriptV4(doc));
             break;
         }case 3:{
-            ins=qobject_cast<Script*> (new (ins) ScriptV3(doc));
+            ptr=qobject_cast<Script*> (new (ins,false) ScriptV3(doc));
             break;
         }default:{
             qDebug("No Script Version Set !");
             exit(1);
         }
     }
+    return ptr;
 }
 
 Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
-    if(reinitalize)
-        Reinitalize(this,doc);
-    else
+    if(reinitalize){
+        ScriptIns=Reinitalize(this,doc);
+    }else{
         ScriptIns=NULL;
+    }
 }
 
 Script::~Script()
 {
-    if(this->ScriptIns && this->ScriptIns == this)
-    {
-        this->ScriptIns = NULL;
-    }
-    delete (Script*)this->ScriptIns;
+    if(ScriptIns==this)
+        ScriptIns=NULL;
+    delete (Script*)ScriptIns;
 }
 
 QIcon Script::getIcon() const
