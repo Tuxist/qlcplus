@@ -85,7 +85,8 @@ void *Script::operator new(size_t size,void *ptr,bool reinitalized)
     return ::operator new(size,ptr);
 }
 
-void *Script::Reinitalize(Script* ins,Doc* doc){
+void *Script::Reinitalize(Script* ins,Doc* doc)
+{
     void *ptr=NULL;
     switch(Script::ScriptVersion){
         case 4:{
@@ -102,7 +103,8 @@ void *Script::Reinitalize(Script* ins,Doc* doc){
     return ptr;
 }
 
-Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
+Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc)
+{
     if(reinitalize){
         ScriptIns=Reinitalize(this,doc);
     }else{
@@ -112,9 +114,21 @@ Script::Script(Doc* doc,bool reinitalize) : ScriptApi(doc){
 
 Script::~Script()
 {
-    if(ScriptIns==this)
+    if(ScriptIns && ScriptIns==this){
         ScriptIns=NULL;
-    delete (Script*)ScriptIns;
+        switch(Script::ScriptVersion){
+            case 4:{
+                ((ScriptV4*)this)->~ScriptV4();
+                return;
+            }case 3:{
+                ((ScriptV3*)this)->~ScriptV3();
+                return;
+            }default:{
+                return;    
+            }
+        }
+    }
+    delete this;
 }
 
 QIcon Script::getIcon() const
